@@ -9,10 +9,14 @@ NProgress.configure({ showSpinner: false })
 
 const whiteList = ['/login', '/auth-redirect', '/bind', '/register']
 
+//“导航”表示路由正在发生改变。
+//你可以使用 router.beforeEach 注册一个全局前置守卫：
 router.beforeEach((to, from, next) => {
   NProgress.start()
   if (getToken()) {
     /* has token*/
+    console.log('-------- has token-------');
+    
     if (to.path === '/login') {
       next({ path: '/' })
       NProgress.done()
@@ -49,6 +53,8 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     // 没有token
+    console.log('-----没有token----------');
+    
     if (whiteList.indexOf(to.path) !== -1) {
       // 在免登录白名单，直接进入
       next()
@@ -59,6 +65,8 @@ router.beforeEach((to, from, next) => {
   }
 })
 
+
+//#全局后置钩子
 router.afterEach(() => {
   NProgress.done()
 })
