@@ -16,6 +16,7 @@ router.beforeEach((to, from, next) => {
   if (getToken()) {
     /* has token*/
     console.log('-------- has token-------');
+    console.log('--------to.path-------'+  to.path );
     
     if (to.path === '/login') {
       next({ path: '/' })
@@ -26,12 +27,17 @@ router.beforeEach((to, from, next) => {
         store.dispatch('GetInfo').then(res => {
           // 拉取user_info
           const roles = res.roles
+          console.log('tag----roles==='+ JSON.stringify( roles))
+
           store.dispatch('GenerateRoutes', { roles }).then(accessRoutes => {
           // 测试 默认静态页面
           // store.dispatch('permission/generateRoutes', { roles }).then(accessRoutes => {
+            console.log('------accessRoutes-------=='+  JSON.stringify( accessRoutes) );
+            
             // 根据roles权限生成可访问的路由表
             router.addRoutes(accessRoutes) // 动态添加可访问路由表
             next({ ...to, replace: true }) // hack方法 确保addRoutes已完成
+
           })
         })
           .catch(err => {

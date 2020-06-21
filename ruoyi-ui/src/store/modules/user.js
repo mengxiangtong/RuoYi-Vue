@@ -2,6 +2,8 @@ import { login, logout, getInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
+  /*state为单一状态树，在state中需要定义我们所需要管理的数组、
+  对象、字符串等等，只有在这里定义了，在vue.js的组件中才能获取你定义的这个对象的状态。*/
   state: {
     token: getToken(),
     name: '',
@@ -9,7 +11,10 @@ const user = {
     roles: [],
     permissions: []
   },
-
+/*  更改store中state状态的唯一方法就是提交mutation，就很类似事件。
+每个mutation都有一个字符串类型的事件类型和一个回调函数，我们需要改变state的值就要在回调函数中改变。
+我们要执行这个回调函数，那么我们需要执行一个相应的调用方法：store.commit。
+ */
   mutations: {
     SET_TOKEN: (state, token) => {
       state.token = token
@@ -27,7 +32,9 @@ const user = {
       state.permissions = permissions
     }
   },
-
+/*action可以提交mutation，在action中可以执行store.commit，而且action中可以有任何的异步操作。
+在页面中如果我们要嗲用这个action，则需要执行store.dispatch
+*/
   actions: {
     // 登录
     Login({ commit }, userInfo) {
